@@ -1,0 +1,30 @@
+<input [(ngModel)]="url">
+<button (click)="onGetTitleClick()">Get Title</button>
+<button (click)="onGetImagesClick()">Get Images</button>
+<button (click)="onGetChildrenClick()">Get Children</button>
+
+<ng-container *ngIf="scrapedPage">
+    <p>
+        {{scrapedPage.title}}
+    </p>
+</ng-container>
+<ng-container *ngIf="scrapedImages">
+    <app-image-renderer [imageUrls]="scrapedImages.images"></app-image-renderer>
+</ng-container>
+<ng-container *ngIf="crawledPage">
+    <div *ngFor="let childPage of crawledPage.childPages">
+        <p>
+            {{childPage}}
+        </p>
+        <button (click)="onChildTitleClick(childPage)">Scrape title</button>
+        <button (click)="onChildImagesClick(childPage)">Scrape images</button>
+        <ng-container *ngIf="childScrapedPage">
+            <p>
+                {{childScrapedPage.title}}
+            </p>
+        </ng-container>
+        <ng-container *ngIf="childScrapedImages">
+            <app-image-renderer [imageUrls]="childScrapedImages.images"></app-image-renderer>
+        </ng-container>
+    </div>
+</ng-container>
