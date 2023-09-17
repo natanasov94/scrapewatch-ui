@@ -10,4 +10,5 @@ RUN ng build
 
 FROM nginx:alpine AS prod-build
 COPY --from=builder /app/dist/scrapewatch-ui /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/templates/default.conf.template
 EXPOSE 80
