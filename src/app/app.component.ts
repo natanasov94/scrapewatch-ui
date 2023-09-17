@@ -15,10 +15,9 @@ export class AppComponent {
 
   scrapedPage: ScrapedPageDTO | undefined;
   scrapedImages: ScrapedImagesDTO | undefined;
-  crawledPage: CrawledPageDTO | undefined;
-  
-  childScrapedPage: ScrapedPageDTO | undefined
-  childScrapedImages: ScrapedImagesDTO | undefined
+
+  childPages!: string[];
+  childData: Map<number, ChildPageData> = new Map<number, ChildPageData>();
   constructor(private api: AppApiService) { }
 
   onGetTitleClick() {
@@ -26,7 +25,8 @@ export class AppComponent {
       .subscribe(scrapedPage => {
         this.scrapedPage = scrapedPage;
         this.scrapedImages = undefined;
-        this.crawledPage = undefined;
+        this.childPages = [];
+        this.childData = new Map<number, ChildPageData>();
       })
   }
   onGetImagesClick() {
@@ -34,30 +34,46 @@ export class AppComponent {
       .subscribe(scrapedImages => {
         this.scrapedImages = scrapedImages;
         this.scrapedPage = undefined;
-        this.crawledPage = undefined;
+        this.childPages = [];
+        this.childData = new Map<number, ChildPageData>();
       })
   }
   onGetChildrenClick() {
     this.api.getChildren(this.url)
       .subscribe(crawledPage => {
-        this.crawledPage = crawledPage;
+        this.childPages = crawledPage.childPages;
         this.scrapedPage = undefined;
         this.scrapedImages = undefined;
-        this.childScrapedImages = undefined;
-        this.childScrapedPage = undefined;
+        this.childData = new Map<number, ChildPageData>();
       })
   }
 
-  onChildTitleClick(childUrl: string) {
+  onChildTitleClick(childUrl: string, index: number) {
     this.api.getTitle(childUrl)
       .subscribe(childScrapedPage => {
-        this.childScrapedPage = childScrapedPage;
+        this.childData.set(index,
+          {
+            title: childScrapedPage.title,
+            images: this.childData.get(index)?.images ?? []
+          });
       })
   }
-  onChildImagesClick(childUrl: string) {
+  onChildImagesClick(childUrl: string, index: number) {
     this.api.getImages(childUrl)
       .subscribe(scrapedImages => {
-        this.childScrapedImages = scrapedImages;
+        this.childData.set(index,
+          {
+            title: this.childData.get(index)?.title ?? "",
+            images: scrapedImages.images
+          });
       })
   }
+  onChildClearClick(index: number) {
+    this.childData.delete(index);
+  }
+}
+
+interface ChildPageData {
+  title: string;
+  images: string[];
 }
