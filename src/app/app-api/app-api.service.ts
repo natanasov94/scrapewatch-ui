@@ -4,13 +4,14 @@ import { Observable } from 'rxjs';
 import { ScrapedPageDTO } from '../dto/scraped-page-dto';
 import { ScrapedImagesDTO } from '../dto/scraped-images-dto';
 import { CrawledPageDTO } from '../dto/crawled-page-dto';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppApiService {
 
-  private baseUrl: string = "http://localhost:8080";
+  private baseUrl: string = environment.apiUrl;
   
   constructor(private http:HttpClient) { }
 
