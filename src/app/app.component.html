@@ -1,6 +1,7 @@
 <input [(ngModel)]="url">
 <button (click)="onGetTitleClick()">Get Title</button>
 <button (click)="onGetImagesClick()">Get Images</button>
+<button (click)="onGetEmailsClick()">Get Emails</button>
 <button (click)="onGetChildrenClick()">Get Children</button>
 
 <ng-container *ngIf="scrapedPage">
@@ -11,6 +12,9 @@
 <ng-container *ngIf="scrapedImages">
     <app-image-renderer [imageUrls]="scrapedImages.images"></app-image-renderer>
 </ng-container>
+<ng-container *ngIf="scrapedEmails">
+    <app-emails-renderer [emails]="scrapedEmails.emails"></app-emails-renderer>
+</ng-container>
 <ng-container *ngIf="childPages">
     <div *ngFor="let childPage of childPages; index as i">
         <p>
@@ -18,11 +22,13 @@
         </p>
         <button (click)="onChildTitleClick(childPage, i)">Scrape title</button>
         <button (click)="onChildImagesClick(childPage, i)">Scrape images</button>
+        <button (click)="onChildEmailsClick(childPage, i)">Scrape emails</button>
         <button (click)="onChildClearClick(i)">Clear</button>
         <ng-container *ngIf="childData.get(i)">
             <p>
                 {{childData.get(i)?.title}}
             </p>
+            <app-emails-renderer [emails]="childData.get(i)?.emails ?? []"></app-emails-renderer>
             <app-image-renderer [imageUrls]="childData.get(i)?.images ?? []"></app-image-renderer>
         </ng-container>
 

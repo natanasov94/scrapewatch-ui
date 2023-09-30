@@ -6,11 +6,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
 import { ImageRendererComponent } from './image-renderer/image-renderer.component';
+import { EmailsRendererComponent } from './emails-renderer/emails-renderer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ImageRendererComponent
+    ImageRendererComponent,
+    EmailsRendererComponent
   ],
   imports: [
     BrowserModule,

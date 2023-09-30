@@ -5,6 +5,7 @@ import { ScrapedPageDTO } from '../dto/scraped-page-dto';
 import { ScrapedImagesDTO } from '../dto/scraped-images-dto';
 import { CrawledPageDTO } from '../dto/crawled-page-dto';
 import { environment } from 'src/environments/environment';
+import { ScrapedEmailsDTO } from '../dto/scraped-emails-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -25,5 +26,9 @@ export class AppApiService {
 
   getChildren(url: string): Observable<CrawledPageDTO> {
     return this.http.get<CrawledPageDTO>(`${this.baseUrl}/crawl?url=${url}`)
+  }
+
+  getEmails(url: string): Observable<ScrapedEmailsDTO> {
+    return this.http.get<ScrapedEmailsDTO>(`${this.baseUrl}/scrape/email?url=${url}`)
   }
 }
